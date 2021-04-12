@@ -1,4 +1,5 @@
 {
     "python.pythonPath": "C:\\Users\\deepa\\anaconda3\\envs\\py36\\python.exe",
-    "jupyter.jupyterServerType": "remote"
+    "jupyter.jupyterServerType": "remote",
+    "ai.azureml.defaultWorkspaceId": "/subscriptions/7d811faa-6abc-4bdb-86bf-abb2647f36c1/resourceGroups/dp100/providers/Microsoft.MachineLearningServices/workspaces/mystudy"
 }
