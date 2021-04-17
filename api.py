@@ -184,3 +184,23 @@ predictions = service.run(input_data = input_json)
 endpoint = service.scoring_uri
 headers = { 'Content-Type':'application/json' }
 predictions = requests.post(endpoint, input_json, headers = headers)
+
+
+parallel_run_config = ParallelRunConfig(
+    source_directory=experiment_folder,
+    entry_script="batch_diabetes.py",
+    mini_batch_size="5",
+    error_threshold=10,
+    output_action="append_row",
+    environment=batch_env,
+    compute_target=inference_cluster,
+    node_count=2)
+
+parallelrun_step = ParallelRunStep(
+    name='batch-score-diabetes',
+    parallel_run_config=parallel_run_config,
+    inputs=[batch_data_set.as_named_input('diabetes_batch')],
+    output=output_dir,
+    arguments=[],
+    allow_reuse=True
+)
