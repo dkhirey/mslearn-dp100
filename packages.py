@@ -18,5 +18,7 @@ from azureml.pipeline.core import Pipeline
 from azureml.core.authentication import InteractiveLoginAuthentication
 from azureml.pipeline.core.run import PipelineRun
 from azureml.pipeline.core import ScheduleRecurrence, Schedule
+from azureml.core.webservice import AciWebservice
+from azureml.core.model import InferenceConfig
 
 
