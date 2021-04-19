@@ -204,3 +204,20 @@ parallelrun_step = ParallelRunStep(
     arguments=[],
     allow_reuse=True
 )
+
+
+params = GridParameterSampling(
+    {
+        # Hyperdrive will try 6 combinations, adding these as script arguments
+        '--learning_rate': choice(0.01, 0.1, 1.0),
+        '--n_estimators' : choice(10, 100)
+    }
+)
+
+hyperdrive = HyperDriveConfig(run_config=script_config, 
+                          hyperparameter_sampling=params, 
+                          policy=None, # No early stopping policy
+                          primary_metric_name='AUC', # Find the highest AUC metric
+                          primary_metric_goal=PrimaryMetricGoal.MAXIMIZE, 
+                          max_total_runs=6, # Restict the experiment to 6 iterations
+                          max_concurrent_runs=2) # Run up to 2 iterations in parallel

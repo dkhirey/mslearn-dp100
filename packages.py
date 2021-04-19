@@ -22,5 +22,6 @@ from azureml.core.webservice import AciWebservice
 from azureml.core.model import InferenceConfig
 from azureml.core.runconfig import DEFAULT_CPU_IMAGE
 from azureml.pipeline.steps import ParallelRunConfig, ParallelRunStep
+from azureml.train.hyperdrive import GridParameterSampling, HyperDriveConfig, PrimaryMetricGoal, choice
 
 
