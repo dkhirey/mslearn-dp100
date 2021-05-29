@@ -261,3 +261,24 @@ client = ExplanationClient.from_run_id(workspace=ws,
                                        run_id=run.id)
 explanation = client.download_model_explanation()
 feature_importances = explanation.get_feature_importance_dict()
+
+overall_selection_rate = selection_rate(y_test, y_hat) # Get selection rate from fairlearn
+
+metrics = {'selection_rate': selection_rate,
+           'accuracy': accuracy_score,
+           'recall': recall_score,
+           'precision': precision_score}
+group_metrics = MetricFrame(metrics,
+                             y_test, y_hat,
+                             sensitive_features=S_test['Age'])
+
+FairlearnDashboard(sensitive_features=S_test, 
+                   sensitive_feature_names=['Age'],
+                   y_true=y_test,
+                   y_pred={"diabetes_model": diabetes_model.predict(X_test)})
+
+sweep = GridSearch(DecisionTreeClassifier(),
+                   constraints=EqualizedOdds(),
+                   grid_size=20)
+sweep.fit(X_train, y_train, sensitive_features=S_train.Age)
+models = sweep.predictors_

@@ -30,4 +30,19 @@ from interpret.ext.blackbox import MimicExplainer
 from interpret.ext.glassbox import DecisionTreeExplainableModel
 from interpret.ext.blackbox import PFIExplainer
 
-azureml-sdk,azureml-widgets,azureml-interpret,azureml-contrib-interpret,azureml-explain-model
+from fairlearn.metrics import selection_rate, MetricFrame
+from sklearn.metrics import accuracy_score, recall_score, precision_score
+from fairlearn.widget import FairlearnDashboard
+from fairlearn.metrics._group_metric_set import _create_group_metric_set
+from azureml.contrib.fairness import upload_dashboard_dictionary, download_dashboard_by_upload_id
+from fairlearn.reductions import GridSearch, EqualizedOdds
+
+
+azureml-sdk,
+azureml-widgets,
+azureml-interpret,
+azureml-contrib-interpret,
+azureml-explain-model,
+azureml-contrib-fairness
+fairlearn
+
