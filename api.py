@@ -221,3 +221,43 @@ hyperdrive = HyperDriveConfig(run_config=script_config,
                           primary_metric_goal=PrimaryMetricGoal.MAXIMIZE, 
                           max_total_runs=6, # Restict the experiment to 6 iterations
                           max_concurrent_runs=2) # Run up to 2 iterations in parallel
+
+
+mim_explainer = MimicExplainer(model=loan_model,
+                             initialization_examples=X_test,
+                             explainable_model = DecisionTreeExplainableModel,
+                             features=['loan_amount','income','age','marital_status'], 
+                             classes=['reject', 'approve'])
+
+tab_explainer = TabularExplainer(model=loan_model,
+                             initialization_examples=X_test,
+                             features=['loan_amount','income','age','marital_status'],
+                             classes=['reject', 'approve'])
+
+pfi_explainer = PFIExplainer(model = loan_model,
+                             features=['loan_amount','income','age','marital_status'],
+                             classes=['reject', 'approve'])
+
+global_mim_explanation = mim_explainer.explain_global(X_train)
+global_mim_feature_importance = global_mim_explanation.get_feature_importance_dict()
+
+global_pfi_explanation = pfi_explainer.explain_global(X_train, y_train)
+global_pfi_feature_importance = global_pfi_explanation.get_feature_importance_dict()
+
+local_mim_explanation = mim_explainer.explain_local(X_test[0:5])
+local_mim_features = local_mim_explanation.get_ranked_local_names()
+local_mim_importance = local_mim_explanation.get_ranked_local_values()
+
+# Get explanation
+explainer = TabularExplainer(model, X_train, features=features, classes=labels)
+explanation = explainer.explain_global(X_test)
+
+# Get an Explanation Client and upload the explanation
+explain_client = ExplanationClient.from_run(run)
+explain_client.upload_model_explanation(explanation, comment='Tabular Explanation')
+
+client = ExplanationClient.from_run_id(workspace=ws,
+                                       experiment_name=experiment.experiment_name, 
+                                       run_id=run.id)
+explanation = client.download_model_explanation()
+feature_importances = explanation.get_feature_importance_dict()

@@ -24,4 +24,10 @@ from azureml.core.runconfig import DEFAULT_CPU_IMAGE
 from azureml.pipeline.steps import ParallelRunConfig, ParallelRunStep
 from azureml.train.hyperdrive import GridParameterSampling, HyperDriveConfig, PrimaryMetricGoal, choice
 
+from azureml.contrib.interpret.explanation.explanation_client import ExplanationClient
+from interpret.ext.blackbox import TabularExplainer
+from interpret.ext.blackbox import MimicExplainer
+from interpret.ext.glassbox import DecisionTreeExplainableModel
+from interpret.ext.blackbox import PFIExplainer
 
+azureml-sdk,azureml-widgets,azureml-interpret,azureml-contrib-interpret,azureml-explain-model
