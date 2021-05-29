@@ -12,3 +12,18 @@ Model Explanations -
 10. PFIExplainer - a Permutation Feature Importance explainer that analyzes feature importance by shuffling feature values and measuring the impact on prediction performance.
 11. Global Explainer code is the same for MimicExplainer and TabularExplainer. The PFIExplainer requires the actual labels that correspond to the test features.
 12. Local Explainer code is the same for MimicExplainer and TabularExplainer. The PFIExplainer doesn't support local feature importance explanations.
+
+Model Fairness -
+
+1. Mitigation algorithms -
+    Exponentiated Gradient -A reduction technique that applies a cost-minimization approach to learning the optimal trade-off of overall predictive performance and fairness disparity
+    Grid Search - A simplified version of the Exponentiated Gradient algorithm that works efficiently with small numbers of constraints
+    Threshold Optimizer - A post-processing technique that applies a constraint to an existing classifier, transforming the prediction as appropriate
+2. Demographic parity:this constraint tries to ensure that an equal number of positive predictions are made in each group.
+3. True positive rate parity:  this constraint tries to ensure that each group contains a comparable ratio of true positive predictions.
+4. False-positive rate parity: this constraint tries to ensure that each group contains a comparable ratio of false-positive predictions.
+5. Equalized odds:this constraint tries to ensure that each group contains a comparable ratio of true positive and false-positive predictions.
+6. Error rate parity: ensure that the error for each sensitive feature group does not deviate from the overall error rate by more than a specified amount.
+7. Bounded group loss: this constraint with any of the reduction-based mitigation algorithms to restrict the loss for each sensitive feature group in a regression model.
+8. reduction-based mitigation algorithms - Exponentiated Gradient and Grid Search
+9. An important point to reinforce is that applying fairness mitigation to a model is a trade-off between overall predictive performance and disparity across sensitive feature groups
