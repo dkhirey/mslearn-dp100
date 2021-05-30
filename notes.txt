@@ -1,3 +1,7 @@
+Accuracy: (TP+TN)/(TP+TN+FP+FN) - in other words, out all of the predictions, how many were correct?
+Recall: TP/(TP+FN) - in other words, of all the cases that are positive, how many did the model identify?
+Precision: TP/(TP+FP) - in other words, of all the cases that the model predicted to be positive, how many actually are positive?
+
 Model Explanations -
 
 1. Visualizations are only available for experiment runs that were configured to generate and upload explanations. 
@@ -27,3 +31,10 @@ Model Fairness -
 7. Bounded group loss: this constraint with any of the reduction-based mitigation algorithms to restrict the loss for each sensitive feature group in a regression model.
 8. reduction-based mitigation algorithms - Exponentiated Gradient and Grid Search
 9. An important point to reinforce is that applying fairness mitigation to a model is a trade-off between overall predictive performance and disparity across sensitive feature groups
+
+Data Drift -
+
+1. This change in data profiles between training and inferencing is known as data drift
+2. You can define a schedule to run every Day, Week, or Month.
+3. you can specify a latency, indicating the number of hours to allow for new data to be collected and added to the target dataset
+4. Data drift is measured using a calculated magnitude of change in the statistical distribution of feature values over time.

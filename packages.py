@@ -37,6 +37,8 @@ from fairlearn.metrics._group_metric_set import _create_group_metric_set
 from azureml.contrib.fairness import upload_dashboard_dictionary, download_dashboard_by_upload_id
 from fairlearn.reductions import GridSearch, EqualizedOdds
 
+from azureml.datadrift import DataDriftDetector
+
 
 azureml-sdk,
 azureml-widgets,
@@ -45,4 +47,5 @@ azureml-contrib-interpret,
 azureml-explain-model,
 azureml-contrib-fairness
 fairlearn
+azureml-datadrift
 
