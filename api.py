@@ -53,6 +53,12 @@ azureml_globaldatasets - Default = False
 workspacefilestore - Default = False
 workspaceblobstore - Default = True
 
+blob_ds = Datastore.register_azure_blob_container(workspace=ws, 
+                                                  datastore_name='blob_data', 
+                                                  container_name='data_container',
+                                                  account_name='az_store_acct',
+                                                  account_key='123456abcde789…')
+
 default_ds.upload_files(files=['./data/diabetes.csv', './data/diabetes2.csv'],
                        target_path='diabetes-data/', 
                        overwrite=True,

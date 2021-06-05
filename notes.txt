@@ -1,3 +1,36 @@
+Azure Introduction -
+
+1. Azure resources created alongside a workspace include:
+	A storage account - used to store files used by the workspace as well as data for experiments and model training.
+	An Application Insights instance, used to monitor predictive services in the workspace.
+	An Azure Key Vault instance, used to manage secrets such as authentication keys and credentials used by the workspace.
+	A container registry, created as-needed to manage containers for deployed models.
+2. By default, the from_config method looks for a file named config.json in the folder containing the Python code file.
+3. The Azure command-line interface (CLI) is a cross-platform command-line tool for managing Azure resources.  (azure-cli-ml)
+4. Loggng with Run context -
+	log: Record a single named value.
+	log_list: Record a named list of values.
+	log_row: Record a row with multiple columns.
+	log_table: Record a dictionary as a table.
+	log_image: Record an image file or a plot.
+5. You can run an experiment inline using the start_logging method of the Experiment object.
+
+
+Datasets -
+
+1. Types of Datastores -
+	Azure Storage (blob and file containers)
+	Azure Data Lake stores
+	Azure SQL Database
+	Azure Databricks file system (DBFS)
+2. Every workspace has two built-in datastores - 
+	Azure Storage blob container, 
+	Azure Storage file container
+3. The workspace always includes a default datastore initially, this is the built-in workspaceblobstore datastore.
+4. Types of Datasets -
+	Tabular: The data is read from the dataset as a table. You should use this type of dataset when your data is consistently 	structured and you want to work with it in common tabular data structures, such as Pandas dataframes.
+	File: The dataset presents a list of file paths that can be read as though from the file system. Use this type of dataset when your data is unstructured, or when you need to process the data at the file level
+
 Accuracy: (TP+TN)/(TP+TN+FP+FN) - in other words, out all of the predictions, how many were correct?
 Recall: TP/(TP+FN) - in other words, of all the cases that are positive, how many did the model identify?
 Precision: TP/(TP+FP) - in other words, of all the cases that the model predicted to be positive, how many actually are positive?
