@@ -30,10 +30,90 @@ Datasets -
 4. Types of Datasets -
 	Tabular: The data is read from the dataset as a table. You should use this type of dataset when your data is consistently 	structured and you want to work with it in common tabular data structures, such as Pandas dataframes.
 	File: The dataset presents a list of file paths that can be read as though from the file system. Use this type of dataset when your data is unstructured, or when you need to process the data at the file level
+5. you use the as_named_input method of the dataset to specify a name for the dataset. Then in the script, you can retrieve the dataset by name from the run context's input_datasets collection without needing to retrieve it from the workspace.
+6. you must specify a mode for the file dataset argument, which can be as_download or as_mount. 
+
+Computes -
+
+1. Types of Computes -
+	Local compute 
+	Compute clusters
+	Attached compute 
+	inference clusters - can only be used to deploy trained models as inferencing services
+2. A managed compute target is one that is managed by Azure Machine Learning, such as an Azure Machine Learning compute cluster.
+3. An unmanaged compute target is one that is defined and managed outside of the Azure Machine Learning workspace; for example, an Azure virtual machine or an Azure Databricks cluster.
+
+Pipelines -
+
+1. In Azure Machine Learning, a pipeline is a workflow of machine learning tasks in which each task is implemented as a step.
+2. Types of steps -
+	PythonScriptStep: Runs a specified Python script.
+	DataTransferStep: Uses Azure Data Factory to copy data between data stores.
+	DatabricksStep: Runs a notebook, script, or compiled JAR on a databricks cluster.
+	AdlaStep: Runs a U-SQL job in Azure Data Lake Analytics.
+	ParallelRunStep - Runs a Python script as a distributed task on multiple compute nodes.
+3. The PipelineData object is a special kind of DataReference that:
+	References a location in a datastore.
+	Creates a data dependency between pipeline steps.
+4. you can force all of them to run regardless of individual reuse configuration by setting the regenerate_outputs parameter
+5. To control reuse for an individual step, you can set the allow_reuse parameter in the step configuration
+6. To define parameters for a pipeline, create a PipelineParameter object for each parameter, and specify each parameter in at least one step.
+7. You must define parameters for a pipeline before publishing it.
+8. To schedule a pipeline to run at periodic intervals, you must define a ScheduleRecurrence that determines the run frequency, and use it to create a Schedule.
+9. To schedule a pipeline to run whenever data changes, you must create a Schedule that monitors a specified path on a datastore.
+
+
+Model as Realtime service -
+
+1. You can deploy a model as a real-time web service to several kinds of compute target, including local compute, an Azure Machine Learning compute instance, an Azure Container Instance (ACI), an Azure Kubernetes Service (AKS) cluster, an Azure Function, or an Internet of Things (IoT) module.
+2. Create the entry script (sometimes referred to as the scoring script)
+	init(): Called when the service is initialized.
+	run(raw_data): Called when new data is submitted to the service.
+3. two kinds of authentication you can use:
+	Key: Requests are authenticated by specifying the key associated with the service.
+	Token: Requests are authenticated by providing a JSON Web Token (JWT).
+	
+
+Model as Batch Service -
+
+1. Using the ParallelRunStep class, you can read batches of files from a File dataset and write the processing output to a PipelineData reference.
+2. you can set the output_action setting for the step to "append_row", which will ensure that all instances of the step being run in parallel will collate their results to a single output file named parallel_run_step.txt. 
+	
 
 Accuracy: (TP+TN)/(TP+TN+FP+FN) - in other words, out all of the predictions, how many were correct?
 Recall: TP/(TP+FN) - in other words, of all the cases that are positive, how many did the model identify?
 Precision: TP/(TP+FP) - in other words, of all the cases that the model predicted to be positive, how many actually are positive?
+
+
+Hyper parameter tuning -
+
+1. The set of hyperparameter values tried during hyperparameter tuning is known as the search space.
+2. Types of Discrete Hyperparameters -
+	Choice
+	qnormal
+	quniform
+	qlognormal
+	qloguniform
+3. Types of Continuous Hyperparameters -
+	normal
+	uniform
+	lognormal
+	loguniform
+4. Grid sampling can only be employed when all hyperparameters are discrete, and is used to try every possible combination of parameters in the search space.
+5. Random sampling is used to randomly select a value for each hyperparameter, which can be a mix of discrete and continuous values
+6. Bayesian sampling chooses hyperparameter values based on the Bayesian optimization algorithm, which tries to select parameter combinations that will result in improved performance from the previous selection.
+7. You can only use Bayesian sampling with choice, uniform, and quniform parameter expressions, and you can't combine it with an early-termination policy.
+8. To help prevent wasting time, you can set an early termination policy that abandons runs that are unlikely to produce a better result than previously completed runs.
+9. The policy is evaluated at an evaluation_interval you specify, based on each time the target performance metric is logged. 
+10. You can also set a delay_evaluation parameter to avoid evaluating the policy until a minimum number of iterations have been completed.
+11. bandit policy to stop a run if the target performance metric underperforms the best run so far by a specified margin.
+12. slack_amount / slack_factor - compares best performance metric 
+13. median stopping policy abandons runs where the target performance metric is worse than the median of the running averages for all runs
+14. truncation selection policy cancels the lowest performing X% of runs at each evaluation interval based on the truncation_percentage value you specify for X.
+15. Hyperdrice scoring sript must -
+	Include an argument for each hyperparameter you want to vary.
+	Log the target performance metric.
+
 
 Model Explanations -
 

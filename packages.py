@@ -15,6 +15,7 @@ from azureml.core.runconfig import RunConfiguration
 from azureml.pipeline.core import PipelineData
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline
+from azureml.pipeline.core.graph import PipelineParameter
 from azureml.core.authentication import InteractiveLoginAuthentication
 from azureml.pipeline.core.run import PipelineRun
 from azureml.pipeline.core import ScheduleRecurrence, Schedule
