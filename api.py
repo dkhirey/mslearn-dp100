@@ -227,6 +227,19 @@ hyperdrive = HyperDriveConfig(run_config=script_config,
                           primary_metric_goal=PrimaryMetricGoal.MAXIMIZE, 
                           max_total_runs=6, # Restict the experiment to 6 iterations
                           max_concurrent_runs=2) # Run up to 2 iterations in parallel
+						  
+						  
+automl_run_config = RunConfiguration(framework='python')
+automl_config = AutoMLConfig(name='Automated ML Experiment',
+                             task='classification',
+                             primary_metric = 'AUC_weighted',
+                             compute_target=aml_compute,
+                             training_data = train_dataset,
+                             validation_data = test_dataset,
+                             label_column_name='Label',
+                             featurization='auto',
+                             iterations=12,
+                             max_concurrent_iterations=4)
 
 
 mim_explainer = MimicExplainer(model=loan_model,
@@ -289,6 +302,14 @@ sweep = GridSearch(DecisionTreeClassifier(),
 sweep.fit(X_train, y_train, sensitive_features=S_train.Age)
 models = sweep.predictors_
 
+dep_config = AciWebservice.deploy_configuration(cpu_cores = 1,
+                                                memory_gb = 1,
+                                                enable_app_insights=True)
+												
+traces
+|where message == "STDOUT"
+  and customDimensions.["Service Name"] = "my-svc"
+| project  timestamp, customDimensions.Content
 
 alert_email = AlertConfiguration('data_scientists@contoso.com')
 monitor = DataDriftDetector.create_from_datasets(workspace=ws,
