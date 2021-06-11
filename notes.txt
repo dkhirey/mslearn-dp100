@@ -159,3 +159,15 @@ Data Drift -
 2. You can define a schedule to run every Day, Week, or Month.
 3. you can specify a latency, indicating the number of hours to allow for new data to be collected and added to the target dataset
 4. Data drift is measured using a calculated magnitude of change in the statistical distribution of feature values over time.
+
+
+Discoveries -
+1. ML Designer supports only Tabular Datasets
+2. ML Designer implements SQLLite. It does not have RIGHT OUTER join. Also its views are read only.
+3. ML Designer Import Data gets the data diectly without registering it.
+4. PipelineData object stays at Pipeline level, above steps level.
+5. There is no module called Load Dataset in ML Designer.
+6. There is no run.get_log() API available.
+7. CosmosDB is not a valid datastore source.
+8. Service principal authentication is valid for ADLS. 
+9. ScikitLearn, PyTorch, Tensorflow etc are NOT part of base environment configurations.

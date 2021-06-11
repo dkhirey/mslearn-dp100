@@ -323,3 +323,81 @@ monitor = DataDriftDetector.create_from_datasets(workspace=ws,
                                                  drift_threshold=.3,
                                                  alert_configuration=alert_email)
 backfill = monitor.backfill( dt.datetime.now() - dt.timedelta(weeks=6), dt.datetime.now())
+
+
+
+________________________________________________________________________________________________
+
+
+from pyspark.ml import Pipeline
+from pyspark.ml.feature import VectorAssembler
+from pyspark.ml.regression import LinearRegression
+
+bostonDF = (spark.read
+  .option("HEADER", True)
+  .option("inferSchema", True)
+  .csv("/mnt/training/bostonhousing/bostonhousing/bostonhousing.csv")
+  .drop("_c0")
+)
+
+trainDF, testDF = bostonDF.randomSplit([0.8, 0.2], seed=42)
+
+assembler = VectorAssembler(inputCols=bostonDF.columns[:-1], outputCol="features")
+
+lr = (LinearRegression()
+  .setLabelCol("medv")
+  .setFeaturesCol("features")
+)
+
+pipeline = Pipeline(stages = [assembler, lr])
+
+print(lr.explainParams())
+
+from pyspark.ml.tuning import ParamGridBuilder
+
+paramGrid = (ParamGridBuilder()
+  .addGrid(lr.maxIter, [1, 10, 100])
+  .addGrid(lr.fitIntercept, [True, False])
+  .addGrid(lr.standardization, [True, False])
+  .build()
+)
+
+
+from pyspark.ml.evaluation import RegressionEvaluator
+from pyspark.ml.tuning import CrossValidator
+
+evaluator = RegressionEvaluator(
+  labelCol = "medv", 
+  predictionCol = "prediction"
+)
+
+cv = CrossValidator(
+  estimator = pipeline,             # Estimator (individual model or pipeline)
+  estimatorParamMaps = paramGrid,   # Grid of parameters to try (grid search)
+  evaluator=evaluator,              # Evaluator
+  numFolds = 3,                     # Set k to 3
+  seed = 42                         # Seed to sure our results are the same if ran again
+)
+
+cvModel = cv.fit(trainDF)
+
+bestModel = cvModel.bestModel
+
+
+import mlflow.azureml
+
+model_image, azure_model = mlflow.azureml.build_image(model_uri=model_uri, 
+                                                      workspace=workspace,
+                                                      model_name="model",
+                                                      image_name="model",
+                                                      description="Sklearn ElasticNet image for predicting diabetes progression",
+                                                      synchronous=False)
+model_image.wait_for_creation(show_output=True)
+
+from azureml.core.webservice import AciWebservice, Webservice
+
+dev_webservice_name = "diabetes-model"
+dev_webservice_deployment_config = AciWebservice.deploy_configuration()
+dev_webservice = Webservice.deploy_from_image(name=dev_webservice_name, image=model_image, deployment_config=dev_webservice_deployment_config, workspace=workspace)
+dev_webservice.wait_for_deployment()
+
