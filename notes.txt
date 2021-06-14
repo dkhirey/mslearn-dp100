@@ -184,7 +184,35 @@ ML Designer -
 13. The Web Service Input module indicates where user data enters the pipeline. The Web Service Output module indicates where user data is returned in a real-time inference pipeline.
 14. Enter Data Manually provides the data schema for web service input and is necessary for deploying the real-time endpoint. 
 
+
+AutoML -
+
+1. AutoML supports only Tabular dataset.
+2. Forecasting only supports k-fold cross validation.
+3. Exit criterion - Training job time (hours), Metric score threshold
+4. If the dataset is less than 1,000 rows, 10 folds are used.
+5. If the rows are between 1,000 and 20,000, then three folds are used.
+6. "featurization": 'FeaturizationConfig'	Indicates customized featurization step should be used. 
+7. StandardScalerWrapper technique is used to scale and normalize the data prior to training
+8. Automatic Featurization - 
+	Drop high cardinality or no variance features
+	Impute missing values
+	Generate more features
+	Transform and encode
+	Word embeddings
+	Cluster Distance
+9. Data Guardrails -
+	Missing feature values imputation
+	High cardinality feature handling
+	Validation split handling
+	Class balancing detection
+	Memory issues detection
+	Frequency detection
+10. Block transformers - Specifies block transformers to be used in the featurization process.
+11. BERT is used in the featurization layer of AutoML. In this layer, if a column contains free text or other types of data like timestamps or simple numbers, then featurization is applied accordingly.
+
 Discoveries -
+
 1. ML Designer supports only Tabular Datasets
 2. ML Designer implements SQLLite. It does not have RIGHT OUTER join. Also its views are read only.
 3. ML Designer Import Data gets the data diectly without registering it.
@@ -200,7 +228,7 @@ Discoveries -
 13. AutoML cross validation 10% by default, to change it - either give validation data or validation size
 14. ACI can be authenticated with key ONLY.
 15. In AutoML, train/validation split automatically happens ONLY IF data is greater than 20000 rows.
-16. IN AutoML, for smaller dataset, cross validation with default 5 fold will happen automatically. 
+16. IN AutoML UI, for smaller dataset, cross validation with default 5 fold will happen automatically. 
 17. PipelineParameter is at Pipeline level, above step level.
 18. You should export data labels in COCO format.
 19. az ml workspace sync-keys to refresh keys in workspace.
@@ -208,7 +236,7 @@ Discoveries -
 21. For an experiment, files written to logs folder are uploaded real time.
 22. Compute cluster is the only type of ML Studio which can be associated to Designer.
 23. Databricks, HDInsight cannot be connected to Designer.
-24. Spearman Correlation is a Primary metric for AutoML Regression task.
+24. Spearman Correlation is a Primary metric for AutoML Regression or Timeseries Forecasting task.
 25. AutoML can work with Databricks cluster.
 26. AutoML Regression Task does NOT support deep learning.
 
