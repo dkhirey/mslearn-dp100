@@ -167,6 +167,23 @@ Owner - Grants full access to manage all resources, including the ability to ass
 Contributor - Grants full access to manage all resources, but does not allow you to assign roles in Azure RBAC, manage assignments in Azure Blueprints, or share image galleries.
 Reader - View all resources, but does not allow you to make any changes.
 
+ML Designer -
+
+1.Due to datstore access limitation, if your inference pipeline contains Import Data module, it will be auto-removed when deploy to real-time endpoint.
+2. If you have any doubt about whether missing values were changed, select the option, Generate missing value indicator column. 
+3. SMOTE takes the entire dataset as an input, but it increases the percentage of only the minority cases.
+4. To increase the percentage of minority cases to twice the previous percentage, you would enter 200 for SMOTE percentage in the module's properties.
+5. SMOTE is intended for improving a model during training, not for scoring.
+6. Filter based Feature selection chi squared - Use this method for computing feature importance for two categorical columns.
+7. If you are going to use Filter Based Feature Selection in inference, you need to use Select Columns Transform to store the feature selected result and Apply Transformation to apply the feature selected transformation to the scoring dataset
+8. The designer lets you save data transformations as datasets so that you can use them in other pipelines.
+9. Designer Cross validation algorithm defaults to 10 folds
+10. It's a best practice to normalize datasets before you use them for cross-validation.
+11. There's no need to split the dataset into training and testing sets when you use cross-validation.
+12. The Web Service Input module and Output module can only connect to the type DataFrameDirectory. 
+13. The Web Service Input module indicates where user data enters the pipeline. The Web Service Output module indicates where user data is returned in a real-time inference pipeline.
+14. Enter Data Manually provides the data schema for web service input and is necessary for deploying the real-time endpoint. 
+
 Discoveries -
 1. ML Designer supports only Tabular Datasets
 2. ML Designer implements SQLLite. It does not have RIGHT OUTER join. Also its views are read only.
