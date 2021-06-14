@@ -160,6 +160,12 @@ Data Drift -
 3. you can specify a latency, indicating the number of hours to allow for new data to be collected and added to the target dataset
 4. Data drift is measured using a calculated magnitude of change in the statistical distribution of feature values over time.
 
+RBAC -
+
+ML Studio workspace access roles -
+Owner - Grants full access to manage all resources, including the ability to assign roles in Azure RBAC.
+Contributor - Grants full access to manage all resources, but does not allow you to assign roles in Azure RBAC, manage assignments in Azure Blueprints, or share image galleries.
+Reader - View all resources, but does not allow you to make any changes.
 
 Discoveries -
 1. ML Designer supports only Tabular Datasets
@@ -171,3 +177,26 @@ Discoveries -
 7. CosmosDB is not a valid datastore source.
 8. Service principal authentication is valid for ADLS. 
 9. ScikitLearn, PyTorch, Tensorflow etc are NOT part of base environment configurations.
+10. In AutoML FeaturizationConfig, there is no enable_transformer() method.
+11. Default Authentication method - AKS - Key, Token has to be enable explicitly.
+12. AKS default autoscaling target utilization is 70%, service timeout is 1s.
+13. AutoML cross validation 10% by default, to change it - either give validation data or validation size
+14. ACI can be authenticated with key ONLY.
+15. In AutoML, train/validation split automatically happens ONLY IF data is greater than 20000 rows.
+16. IN AutoML, for smaller dataset, cross validation with default 5 fold will happen automatically. 
+17. PipelineParameter is at Pipeline level, above step level.
+18. You should export data labels in COCO format.
+19. az ml workspace sync-keys to refresh keys in workspace.
+20. Service pricipal has JWT which is used to get token for ACI authentication.
+21. For an experiment, files written to logs folder are uploaded real time.
+22. Compute cluster is the only type of ML Studio which can be associated to Designer.
+23. Databricks, HDInsight cannot be connected to Designer.
+24. Spearman Correlation is a Primary metric for AutoML Regression task.
+25. AutoML can work with Databricks cluster.
+26. AutoML Regression Task does NOT support deep learning.
+
+
+Reference Links -
+https://docs.microsoft.com/en-us/azure/machine-learning/algorithm-module-reference/module-reference
+https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-automated-ml-for-ml-models
+https://docs.microsoft.com/en-us/azure/machine-learning/tutorial-labeling
