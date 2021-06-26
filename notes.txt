@@ -72,12 +72,16 @@ Model as Realtime service -
 3. two kinds of authentication you can use:
 	Key: Requests are authenticated by specifying the key associated with the service.
 	Token: Requests are authenticated by providing a JSON Web Token (JWT).
-	
+4. Azure Container Instances (ACI) are suitable only for small models less than 1 GB in size.
+Use it for low-scale CPU-based workloads that require less than 48 GB of RAM.
+5. Microsoft recommends using single-node Azure Kubernetes Service (AKS) clusters for dev-test of larger models.
+
 
 Model as Batch Service -
 
 1. Using the ParallelRunStep class, you can read batches of files from a File dataset and write the processing output to a PipelineData reference.
 2. you can set the output_action setting for the step to "append_row", which will ensure that all instances of the step being run in parallel will collate their results to a single output file named parallel_run_step.txt. 
+3. ParallelRunStep mini_batch_size config is in terms of volume MB, GB etc.
 	
 
 Accuracy: (TP+TN)/(TP+TN+FP+FN) - in other words, out all of the predictions, how many were correct?
@@ -210,6 +214,16 @@ AutoML -
 	Frequency detection
 10. Block transformers - Specifies block transformers to be used in the featurization process.
 11. BERT is used in the featurization layer of AutoML. In this layer, if a column contains free text or other types of data like timestamps or simple numbers, then featurization is applied accordingly.
+12. Types of scalers -
+	StandardScaleWrapper - Standardize features by removing the mean and scaling to unit variance
+	MinMaxScalar - Transforms features by scaling each feature by that column's minimum and maximum
+	MaxAbsScaler - Scale each feature by its maximum absolute value
+	RobustScalar - Scales features by their quantile range
+13. The Caruana ensemble selection algorithm with sorted ensemble initialization is used to decide which models to use within the ensemble. At a high level, this algorithm initializes the ensemble with up to five models with the best individual scores, and verifies that these models are within 5% threshold of the best score to avoid a poor initial ensemble. 
+14. The web interface for automated ML always uses a remote compute target. 
+15. The Many Models Solution Accelerator (preview) builds on Azure Machine Learning and enables you to use automated ML to train, operate, and manage hundreds or even thousands of machine learning models.
+16. Azure Databricks supported with Python SDK AutoML only.
+17. Once the models are in the ONNX format, they can be run on a variety of platforms and devices. 
 
 
 Data Labeling -
@@ -257,3 +271,23 @@ Reference Links -
 https://docs.microsoft.com/en-us/azure/machine-learning/algorithm-module-reference/module-reference
 https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-automated-ml-for-ml-models
 https://docs.microsoft.com/en-us/azure/machine-learning/tutorial-labeling
+https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-pytorch
+https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-parallel-run-step#monitor-the-parallel-run-job
+https://docs.microsoft.com/en-us/azure/machine-learning/how-to-assign-roles
+https://docs.microsoft.com/id-id/azure/machine-learning/how-to-deploy-and-where
+https://docs.microsoft.com/en-us/azure/machine-learning/concept-train-model-git-integration
+https://docs.microsoft.com/en-us/azure/machine-learning/concept-differential-privacy
+
+
+
+***Always check examp prep site legitimacy on -
+http://certguard.com/Search.asp
+
+These are BrainDump sites. Stay away ...
+https://www.certlibrary.com/info/DP-100
+https://www.itexams.com/info/DP-100
+https://www.examtopics.com/exams/microsoft/dp-100/
+
+safe site -
+www.whizlabs.com
+www.measureup.com
