@@ -75,13 +75,37 @@ Model as Realtime service -
 4. Azure Container Instances (ACI) are suitable only for small models less than 1 GB in size.
 Use it for low-scale CPU-based workloads that require less than 48 GB of RAM.
 5. Microsoft recommends using single-node Azure Kubernetes Service (AKS) clusters for dev-test of larger models.
+6. Using GPU for inference when deployed as a web service is supported only on AKS.
+7. In a local deployment you can't use a reference to a model or environment registered in your Azure Machine Learning workspace.
+8. az ml endpoint update command - You can only modify one aspect (traffic, scale settings, code, model, or environment) in a single update command. 
+9. service.get-logs() command will only provide the last few-hundred lines of logs from an automatically selected instance.
+10. When deploying to Azure Kubernetes Service, key-based authentication is enabled by default. You can also enable token-based authentication.
+11. AKS - To disable authentication, set the auth_enabled=False parameter
+12. AKS - If key authentication is enabled, you can use the service.get_keys() method to retrieve a primary and secondary authentication key
+13. AKS - If token authentication is enabled, you can use the service.get_token() method to retrieve a JWT token and that token's expiration time
+14. auth_enabled Default value is false for ACI and true for AKS.
+15. Authentication Method	ACI					AKS
+	Key						Disabled by default	Enabled by default
+	Token					Not Available		Disabled by default
+16. The key or token must be formatted as Bearer <key-or-token>
+17. The primary difference between keys and tokens is that keys are static and can be regenerated manually, and tokens need to be refreshed upon expiration.
+18. If you need to regenerate a key, use service.regen_key().
+19. Currently the only way to retrieve the token is by using the Azure Machine Learning SDK or the Azure CLI machine learning extension.
+20. The ModelDataCollector class enables you to define a data collector for your models in Azure Machine Learning AKS deployments. The data collector object can be used to collect model data, such as inputs and predictions, to the blob storage of the workspace. When model data collection is enabled in your deployment, collected data will show up in the following container path as csv files: /modeldata/{workspace_name}/{webservice_name}/{model_name}/{model_version}/{designation}/{year}/{month}/{day}/{collection_name}.csv
+21. Currently, ModelDataCollector only works in Azure Machine Learning AKS deployments.
 
 
 Model as Batch Service -
 
 1. Using the ParallelRunStep class, you can read batches of files from a File dataset and write the processing output to a PipelineData reference.
 2. you can set the output_action setting for the step to "append_row", which will ensure that all instances of the step being run in parallel will collate their results to a single output file named parallel_run_step.txt. 
-3. ParallelRunStep mini_batch_size config is in terms of volume MB, GB etc.
+3. ParallelRunStep mini_batch_size config is The number of files the scoring_script can process in one run() call. Default is 10.
+4. Compute clusters support ONLY Batch Inference. NO support for realtime inference.
+5. compute.instance_count - The number of compute nodes to be used for batch scoring. Default is 1.
+6. A batch scoring workload runs as an offline job.
+7. If the output file exists, the batch scoring job will fail.
+8. az ml job show --name $job_name - Use job show to check details and status of a batch scoring job.
+9. There are two top-level log folders, azureml-logs and logs.
 	
 
 Accuracy: (TP+TN)/(TP+TN+FP+FN) - in other words, out all of the predictions, how many were correct?
@@ -258,6 +282,7 @@ AutoML -
 15. The Many Models Solution Accelerator (preview) builds on Azure Machine Learning and enables you to use automated ML to train, operate, and manage hundreds or even thousands of machine learning models.
 16. Azure Databricks supported with Python SDK AutoML only.
 17. Once the models are in the ONNX format, they can be run on a variety of platforms and devices. 
+18. For AutoML register model API, modelid is model_name and it doesn't need model_path
 
 
 Data Labeling -
