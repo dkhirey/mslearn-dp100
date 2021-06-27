@@ -166,10 +166,44 @@ Data Drift -
 
 RBAC -
 
-ML Studio workspace access roles -
-Owner - Grants full access to manage all resources, including the ability to assign roles in Azure RBAC.
-Contributor - Grants full access to manage all resources, but does not allow you to assign roles in Azure RBAC, manage assignments in Azure Blueprints, or share image galleries.
-Reader - View all resources, but does not allow you to make any changes.
+1. ML Studio workspace access roles -
+	Owner - Grants full access to manage all resources, including the ability to assign roles in Azure RBAC.
+	Contributor - Grants full access to manage all resources, but does not allow you to assign roles in Azure RBAC, manage assignments in Azure Blueprints, or share image galleries.
+	Reader - View all resources, but does not allow you to make any changes.
+2. Ways to assign roles -
+	Azure portal UI
+	PowerShell
+	Azure CLI
+	REST API
+	Azure Resource Manager templates
+3. az ml workspace share -w my_workspace -g my_resource_group --role Contributor --user jdoe@contoson.com
+4. {
+    "Name": "Data Scientist Custom",
+    "IsCustom": true,
+    "Description": "Can run experiment but can't create or delete compute.",
+    "Actions": ["*"],
+    "NotActions": [
+        "Microsoft.MachineLearningServices/workspaces/*/delete",
+        "Microsoft.MachineLearningServices/workspaces/write",
+        "Microsoft.MachineLearningServices/workspaces/computes/*/write",
+        "Microsoft.MachineLearningServices/workspaces/computes/*/delete", 
+        "Microsoft.Authorization/*/write"
+    ],
+    "AssignableScopes": [
+        "/subscriptions/<subscription_id>/resourceGroups/<resource_group_name>/providers/Microsoft.MachineLearningServices/workspaces/<workspace_name>"
+    ]
+	}
+	
+5. You can change the AssignableScopes field to set the scope of this custom role at the subscription level, the resource group level, or a specific workspace level.
+6. az role definition create --role-definition data_scientist_role.json
+7. az role definition update --role-definition update_def.json --subscription <sub-id>
+8. If you receive a failure when trying to create a workspace for the first time, make sure that your role allows Microsoft.MachineLearningServices/register/action.
+9. Managed identity is only supported when using the Azure Machine Learning SDK from an Azure Virtual Machine or with an Azure Machine Learning compute cluster.
+10. from azureml.core.authentication import InteractiveLoginAuthentication
+	interactive_auth = InteractiveLoginAuthentication(tenant_id="your-tenant-id")
+11. If you are using the SDK from an environment where you have previously authenticated interactively using the Azure CLI, you can use the AzureCliAuthentication class to authenticate to the workspace using the credentials cached by the CLI
+	from azureml.core.authentication import AzureCliAuthentication
+	cli_auth = AzureCliAuthentication()
 
 ML Designer -
 
