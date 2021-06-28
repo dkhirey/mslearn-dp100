@@ -249,6 +249,13 @@ ML Designer -
 12. The Web Service Input module and Output module can only connect to the type DataFrameDirectory. 
 13. The Web Service Input module indicates where user data enters the pipeline. The Web Service Output module indicates where user data is returned in a real-time inference pipeline.
 14. Enter Data Manually provides the data schema for web service input and is necessary for deploying the real-time endpoint. 
+15. Clean Missing Data - The left port contains the the cleaned data. The right port contains the discarded data.
+16. Train Model - The left port contains the the training set. The right port contains the test set.
+17. When you select Create inference pipeline, several things happen:
+		The trained model is stored as a Dataset module in the module palette. You can find it under My Datasets.
+		Training modules like Train Model and Split Data are removed.
+		The saved trained model is added back into the pipeline.
+		Web Service Input and Web Service Output modules are added. These modules show where user data enters the pipeline and where data is returned.
 
 
 AutoML -
@@ -287,6 +294,9 @@ AutoML -
 16. Azure Databricks supported with Python SDK AutoML only.
 17. Once the models are in the ONNX format, they can be run on a variety of platforms and devices. 
 18. For AutoML register model API, modelid is model_name and it doesn't need model_path
+19. Python 3.8 is not compatible with automl.
+20. ONNX only supports classification and regression tasks at this time.
+21. max_concurrent_iterations defaults to 1.
 
 
 Data Labeling -
@@ -354,6 +364,7 @@ https://docs.microsoft.com/en-us/azure/machine-learning/how-to-assign-roles
 https://docs.microsoft.com/id-id/azure/machine-learning/how-to-deploy-and-where
 https://docs.microsoft.com/en-us/azure/machine-learning/concept-train-model-git-integration
 https://docs.microsoft.com/en-us/azure/machine-learning/concept-differential-privacy
+https://docs.microsoft.com/en-us/azure/databricks/
 
 
 
