@@ -42,6 +42,14 @@ Computes -
 	inference clusters - can only be used to deploy trained models as inferencing services
 2. A managed compute target is one that is managed by Azure Machine Learning, such as an Azure Machine Learning compute cluster.
 3. An unmanaged compute target is one that is defined and managed outside of the Azure Machine Learning workspace; for example, an Azure virtual machine or an Azure Databricks cluster.
+4. Azure VM Types -
+	General Purpose - Ds, Dv series
+	Compute Optimized - F series
+	Memory Optimized - E series
+	Storage Optimized - L series
+	GPU - NC, NV, ND series
+	High Performance - HB series
+	
 
 Pipelines -
 
@@ -93,6 +101,7 @@ Use it for low-scale CPU-based workloads that require less than 48 GB of RAM.
 19. Currently the only way to retrieve the token is by using the Azure Machine Learning SDK or the Azure CLI machine learning extension.
 20. The ModelDataCollector class enables you to define a data collector for your models in Azure Machine Learning AKS deployments. The data collector object can be used to collect model data, such as inputs and predictions, to the blob storage of the workspace. When model data collection is enabled in your deployment, collected data will show up in the following container path as csv files: /modeldata/{workspace_name}/{webservice_name}/{model_name}/{model_version}/{designation}/{year}/{month}/{day}/{collection_name}.csv
 21. Currently, ModelDataCollector only works in Azure Machine Learning AKS deployments.
+22. ModelDataCollector does NOT work for Image/Audio/Video files.
 
 
 Model as Batch Service -
@@ -106,6 +115,7 @@ Model as Batch Service -
 7. If the output file exists, the batch scoring job will fail.
 8. az ml job show --name $job_name - Use job show to check details and status of a batch scoring job.
 9. There are two top-level log folders, azureml-logs and logs.
+10. allow_reuse parameter is set ti True by default.
 	
 
 Accuracy: (TP+TN)/(TP+TN+FP+FN) - in other words, out all of the predictions, how many were correct?
@@ -319,6 +329,33 @@ Data Labeling -
 	Tag the images
 	Review labeled data
 	Export labeled data
+
+
+Databricks -
+1. Every Azure Databricks deployment has a central Hive metastore accessible by all clusters to persist table metadata. You also have the option to use an existing external Hive metastore.
+2. all-purpose cluster  - Created manually. You can manually terminate and restart an all-purpose cluster.
+3. job-cluster - created when you run a job on a new job cluster. You cannot restart an job cluster.
+4. Pool - A set of idle, ready-to-use compute instances.
+5. Databricks Light is the Azure Databricks packaging of the open source Apache Spark runtime.
+6. Workloads -
+	Data engineering - An (automated) workload runs on a job cluster
+	Data analytics - An (interactive) workload runs on an all-purpose cluster.
+7. Azure Databricks operates out of a control plane and a data plane.
+	The control plane includes the backend services that Azure Databricks manages in its own Azure account. 
+	The data plane is managed by your Azure account and is where your data resides.
+8. Install-Module -Name Az.Databricks -AllowPrerelease
+9. New-AzDatabricksWorkspace -Name mydatabricksws -ResourceGroupName myresourcegroup -Location westus2 -ManagedResourceGroupName databricks-group -Sku standard
+10. Unique Databricks workspace URL - per-workspace URL https://adb-5555555555555555.19.azuredatabricks.net/
+11. Workspace experiments are not associated with any notebook, and any notebook can log a run to these experiments by using the experiment ID or the experiment name.
+12. A notebook experiment is associated with a specific notebook. 
+13. Azure Databricks automatically creates a notebook experiment if there is no active experiment when you start a run using mlflow.start_run()
+14. If you do not specify an artifact location, artifacts are stored in dbfs:/databricks/mlflow-tracking/<experiment-id>.
+15. Only MLflow runs initiated within a notebook can be logged to the notebook experiment. 
+16. MLflow runs launched from any notebook or from the APIs can be logged to a workspace experiment.
+17. MLflow is an open source platform for managing the end-to-end machine learning lifecycle. It has three primary components: Tracking, Models, and Projects.
+18. An MLflow run is a collection of parameters, metrics, tags, and artifacts associated with a machine learning model training process.
+19. MLflow Model Serving allows you to host machine learning models from Model Registry as REST endpoints
+20. Model Endpoint - <databricks-instance>/model/<registered-model-name>/<model-version>/invocations
 
 
 Discoveries -
